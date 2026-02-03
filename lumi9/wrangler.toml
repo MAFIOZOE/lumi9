@@ -4,7 +4,7 @@ compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 # Pages will auto-detect the output directory
-pages_build_output_dir = ".open-next/cloudflare"
+pages_build_output_dir = ".open-next"
 
 [vars]
 # Environment variables set in Cloudflare Dashboard
