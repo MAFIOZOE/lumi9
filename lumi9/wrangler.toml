@@ -1,0 +1,7 @@
+# Cloudflare Pages configuration for Lumi9
+name = "lumi9"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Tell Pages/Wrangler where the build output is for OpenNext
+pages_build_output_dir = ".open-next"
