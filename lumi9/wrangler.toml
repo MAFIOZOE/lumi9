@@ -1,0 +1,13 @@
+# Cloudflare Pages configuration for Lumi9
+name = "lumi9"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages will auto-detect the output directory
+pages_build_output_dir = ".open-next/cloudflare"
+
+[vars]
+# Environment variables set in Cloudflare Dashboard
+# NEXT_PUBLIC_SUPABASE_URL = ""
+# NEXT_PUBLIC_SUPABASE_ANON_KEY = ""
+# etc.

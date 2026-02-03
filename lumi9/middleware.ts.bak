@@ -1,0 +1,61 @@
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+// Tenant resolution middleware
+// Extracts tenant from subdomain: {tenant}.lumi9.ai
+
+export function middleware(request: NextRequest) {
+  const hostname = request.headers.get('host') || ''
+  const url = request.nextUrl.clone()
+  
+  // Extract subdomain
+  // In production: alice.lumi9.ai -> alice
+  // In dev: alice.localhost:3000 -> alice
+  const subdomain = getSubdomain(hostname)
+  
+  // Skip for main domain, api routes, and static files
+  if (!subdomain || 
+      subdomain === 'www' || 
+      subdomain === 'app' ||
+      url.pathname.startsWith('/api') ||
+      url.pathname.startsWith('/_next') ||
+      url.pathname.includes('.')) {
+    return NextResponse.next()
+  }
+  
+  // Add tenant to headers for downstream use
+  const response = NextResponse.next()
+  response.headers.set('x-tenant-slug', subdomain)
+  
+  // Also rewrite to include tenant in searchParams for server components
+  url.searchParams.set('tenant', subdomain)
+  
+  return NextResponse.rewrite(url, {
+    headers: { 'x-tenant-slug': subdomain }
+  })
+}
+
+function getSubdomain(hostname: string): string | null {
+  // Remove port if present
+  const host = hostname.split(':')[0]
+  
+  // Production: alice.lumi9.ai
+  if (host.endsWith('.lumi9.ai')) {
+    return host.replace('.lumi9.ai', '')
+  }
+  
+  // Development: alice.localhost
+  if (host.endsWith('.localhost')) {
+    return host.replace('.localhost', '')
+  }
+  
+  // No subdomain
+  return null
+}
+
+export const config = {
+  matcher: [
+    // Match all paths except static files
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
+}
