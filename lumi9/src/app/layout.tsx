@@ -8,6 +8,9 @@ import SafeApp from '@/components/SafeApp'
 import { getDefaultBranding, normalizeBranding } from '@/lib/branding'
 import { getTenant } from '@/lib/tenant'
 
+// Force dynamic rendering to allow headers() usage
+export const dynamic = 'force-dynamic'
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -19,8 +22,13 @@ const geistMono = Geist_Mono({
 })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const tenant = await getTenant()
-  const branding = tenant ? normalizeBranding(tenant.branding) : getDefaultBranding()
+  let branding
+  try {
+    const tenant = await getTenant()
+    branding = tenant ? normalizeBranding(tenant.branding) : getDefaultBranding()
+  } catch {
+    branding = getDefaultBranding()
+  }
 
   return {
     title: branding.brandName,
