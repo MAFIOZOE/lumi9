@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server'
 // Tenant resolution proxy
 // Extracts tenant from subdomain: {tenant}.lumi9.ai
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   try {
     const hostname = request.headers.get('host') || ''
     const url = request.nextUrl.clone()
