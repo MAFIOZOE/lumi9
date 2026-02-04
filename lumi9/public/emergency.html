@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumi9 - Emergency Mode</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background: #111827; 
+            color: white; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            padding: 1rem;
+        }
+        .container { text-align: center; max-width: 500px; }
+        h1 { font-size: 3rem; font-weight: bold; margin-bottom: 1rem; }
+        .accent { color: #22d3ee; }
+        .subtitle { font-size: 1.25rem; color: #9ca3af; margin-bottom: 2rem; }
+        .buttons { margin-bottom: 2rem; }
+        .btn { 
+            display: inline-block; 
+            padding: 0.75rem 2rem; 
+            margin: 0 0.5rem; 
+            border-radius: 0.75rem; 
+            text-decoration: none; 
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #4f46e5; color: white; }
+        .btn-primary:hover { background: #4338ca; }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .status { font-size: 0.875rem; color: #6b7280; }
+        .warning {
+            background: #dc2626;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="warning">
+            ⚠️ Emergency Mode Active<br>
+            JavaScript temporarily disabled due to configuration issues.
+        </div>
+        
+        <h1>Lumi<span class="accent">9</span></h1>
+        <p class="subtitle">Your AI workforce, ready when you are.</p>
+        
+        <div class="buttons">
+            <a href="https://lumi9.pages.dev" class="btn btn-primary">Use Backup Site</a>
+            <a href="#" class="btn btn-secondary" onclick="location.reload()">Retry</a>
+        </div>
+        
+        <div class="status">
+            Emergency static mode • No JavaScript errors<br>
+            <small>If you see this, the deployment is working but environment variables need configuration.</small>
+        </div>
+    </div>
+
+    <script>
+    // Minimal safe JavaScript
+    try {
+        console.log('Emergency mode: Basic JavaScript working');
+        
+        // Check if we have environment variables
+        if (typeof process !== 'undefined' && process.env) {
+            console.log('Environment check:', {
+                hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+                hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+            });
+        }
+        
+        // Try to detect the original error
+        window.addEventListener('error', function(e) {
+            console.error('Caught error in emergency mode:', e);
+            document.body.innerHTML += '<div style="position:fixed;bottom:10px;left:10px;background:red;color:white;padding:10px;border-radius:5px;font-size:12px;">Error: ' + e.message + '</div>';
+        });
+        
+    } catch (e) {
+        console.error('Even emergency JavaScript failed:', e);
+    }
+    </script>
+</body>
+</html>
