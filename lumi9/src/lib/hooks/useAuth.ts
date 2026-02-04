@@ -7,33 +7,63 @@ import { User } from '@supabase/supabase-js'
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
+  const [error, setError] = useState<string | null>(null)
+  const [supabase, setSupabase] = useState<ReturnType<typeof createClient> | null>(null)
 
   useEffect(() => {
-    // Get initial session
-    const getSession = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setLoading(false)
-    }
+    let subscription: any = null
 
-    getSession()
+    const initAuth = async () => {
+      try {
+        // Try to create Supabase client
+        const client = createClient()
+        setSupabase(client)
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null)
+        // Get initial session
+        const { data: { user }, error: userError } = await client.auth.getUser()
+        if (userError) {
+          console.error('Auth error:', userError)
+          setError(userError.message)
+        } else {
+          setUser(user)
+          setError(null)
+        }
+
+        // Listen for auth changes
+        const { data } = client.auth.onAuthStateChange(
+          (_event, session) => {
+            setUser(session?.user ?? null)
+            setError(null)
+          }
+        )
+        subscription = data.subscription
+
+      } catch (err) {
+        console.error('Supabase initialization failed:', err)
+        setError(err instanceof Error ? err.message : 'Authentication service unavailable')
+      } finally {
         setLoading(false)
       }
-    )
+    }
 
-    return () => subscription.unsubscribe()
-  }, [supabase.auth])
+    initAuth()
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+    }
+  }, [])
 
   const signOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
+    try {
+      if (!supabase) return
+      await supabase.auth.signOut()
+      setUser(null)
+    } catch (err) {
+      console.error('Sign out error:', err)
+    }
   }
 
-  return { user, loading, signOut }
+  return { user, loading, signOut, error }
 }

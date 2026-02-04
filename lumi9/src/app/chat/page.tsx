@@ -20,7 +20,7 @@ interface Conversation {
 
 export default function ChatPage() {
   const branding = useBranding()
-  const { user, loading, signOut } = useAuth()
+  const { user, loading, signOut, error: authError } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
   
@@ -176,6 +176,29 @@ export default function ChatPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Show auth error if present
+  if (authError) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[var(--background)] px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="bg-[var(--surface)] rounded-2xl p-8 border border-white/10">
+            <div className="text-red-400 text-4xl mb-4">⚠️</div>
+            <h1 className="text-xl font-bold text-[var(--text)] mb-4">Authentication Error</h1>
+            <p className="text-[var(--text-muted)] mb-6">
+              {authError}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-medium py-3 rounded-xl transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // Show loading while checking auth
