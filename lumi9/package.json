@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:cloudflare": "npx @opennextjs/cloudflare build && node scripts/cf-pages-postbuild.js",
+    "build:cloudflare": "next build",
     "preview": "npm run build:cloudflare && npx @opennextjs/cloudflare preview",
     "deploy": "npm run build:cloudflare && npx @opennextjs/cloudflare deploy",
     "start": "next start",
