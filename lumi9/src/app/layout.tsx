@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
 import BrandProvider from '@/components/BrandProvider'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import { getDefaultBranding, normalizeBranding } from '@/lib/branding'
 import { getTenant } from '@/lib/tenant'
 
@@ -34,13 +35,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const tenant = await getTenant()
-  const branding = tenant ? normalizeBranding(tenant.branding) : getDefaultBranding()
+  let branding
+  try {
+    const tenant = await getTenant()
+    branding = tenant ? normalizeBranding(tenant.branding) : getDefaultBranding()
+  } catch (error) {
+    console.error('Failed to load tenant branding:', error)
+    branding = getDefaultBranding()
+  }
 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <BrandProvider branding={branding}>{children}</BrandProvider>
+        <BrandProvider branding={branding}>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+        </BrandProvider>
       </body>
     </html>
   )

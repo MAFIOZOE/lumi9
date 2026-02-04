@@ -134,11 +134,14 @@ export default function ChatPage() {
 
       if (!res.ok) {
         if (res.status === 402) {
-          setError(`Out of credits! Balance: ${data.balance}`)
+          setError(`💳 Out of credits! Current balance: ${data.balance || 0}`)
         } else if (res.status === 401) {
           router.push('/login')
+          return
+        } else if (res.status === 503) {
+          setError('🤖 AI service is temporarily unavailable. Please try again in a moment.')
         } else {
-          setError(data.error || 'Something went wrong')
+          setError(data.error || '❌ Something went wrong. Please try again.')
         }
         return
       }
@@ -159,8 +162,17 @@ export default function ChatPage() {
         loadConversations() // Refresh sidebar
       }
 
-    } catch {
-      setError('Failed to send message')
+    } catch (err) {
+      console.error('Chat error:', err)
+      if (err instanceof Error) {
+        if (err.message.includes('fetch')) {
+          setError('🌐 Connection failed. Please check your internet and try again.')
+        } else {
+          setError(`❌ ${err.message}`)
+        }
+      } else {
+        setError('❌ Failed to send message. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
