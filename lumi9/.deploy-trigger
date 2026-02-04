@@ -1,3 +1,5 @@
-DEPLOYMENT TRIGGER: $(Get-Date)
-Environment variables have been added to Cloudflare Pages.
-This commit forces a new build to pick up the env vars.
+DEPLOY_TRIGGER=2026-02-04_11:17_routes_json_fix
+# This file triggers deployments and tracks deployment reasons
+# ISSUE: _routes.json missing from Cloudflare Pages deployment
+# FIX: Ensured cf-pages-postbuild.js runs during build:cloudflare script
+# Expected result: API routes (404s) and dynamic pages (500s) should work
