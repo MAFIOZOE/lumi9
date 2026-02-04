@@ -4,6 +4,7 @@ import './globals.css'
 
 import BrandProvider from '@/components/BrandProvider'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import SafeApp from '@/components/SafeApp'
 import { getDefaultBranding, normalizeBranding } from '@/lib/branding'
 import { getTenant } from '@/lib/tenant'
 
@@ -49,7 +50,9 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <BrandProvider branding={branding}>
           <ErrorBoundary>
-            {children}
+            <SafeApp>
+              {children}
+            </SafeApp>
           </ErrorBoundary>
         </BrandProvider>
       </body>
