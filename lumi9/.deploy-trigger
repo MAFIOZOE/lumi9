@@ -1,8 +1,9 @@
-DEPLOY_TRIGGER=2026-02-04_13:11_cloudflare_functions_implementation
-# Created proper Cloudflare Pages Functions in functions/api/ directory
-# This should make API routes work as serverless functions:
+DEPLOY_TRIGGER=2026-02-04_18:30_api_routes_fix_deployment
+# CRITICAL: Deploy Cloudflare Pages Functions to fix 404 API errors
+# Functions implemented at functions/api/ directory:
 # - /api/env-check (environment testing)
 # - /api/chat (core chat functionality) 
 # - /api/dashboard (dashboard data)
 # - /api/auth/provision (user provisioning)
-# Expected result: API routes should now return 200 instead of 404
+# This should replace broken OpenNext API integration
+# Status: Ready for deployment - functions tested and validated
