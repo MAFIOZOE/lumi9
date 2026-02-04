@@ -1,0 +1,3 @@
+DEPLOYMENT TRIGGER: $(Get-Date)
+Environment variables have been added to Cloudflare Pages.
+This commit forces a new build to pick up the env vars.
