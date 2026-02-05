@@ -62,9 +62,4 @@ function getSubdomain(hostname: string): string | null {
   return null
 }
 
-export const config = {
-  matcher: [
-    // Match all paths except static files
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
-}
+
