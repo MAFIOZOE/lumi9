@@ -5,3 +5,6 @@ compatibility_flags = ["nodejs_compat"]
 
 # Tell Pages/Wrangler where the build output is for OpenNext
 pages_build_output_dir = ".open-next"
+[vars]
+NEXT_PUBLIC_SUPABASE_URL ="https://yrfxizfpuedxiejjliko.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlyZnhpemZwdWVkeGllampsaWtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNzE1OTUsImV4cCI6MjA4NTY0NzU5NX0.-BRsOPOZK0rzbyNEpAvuDUo03l37rnrQuGXExP3GUjs"
