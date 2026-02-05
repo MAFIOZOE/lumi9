@@ -1,14 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Disable experimental features that might cause issues
-  experimental: {
-    turbo: false,
-  },
-
   // Environment variable fallbacks for debugging
   env: {
-    // These will be available at build time and runtime
     DEBUG_BUILD: 'true',
     BUILD_TIMESTAMP: new Date().toISOString(),
   },
